@@ -1,0 +1,110 @@
+﻿<Window x:Class="CashierApp.WorkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CashierApp"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Background="{DynamicResource MaterialDesignPaper}"
+        Title="Касовий додаток" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize" WindowState="Maximized" Icon="/Views/logomak_logo.png">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition  />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Column 1 -->
+        <!-- Row 1 - Table -->
+        <DataGrid x:Name="DataGrid" Grid.Column="1" Grid.Row="1"
+            ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="All"
+                  HorizontalGridLinesBrush="Black" VerticalGridLinesBrush="Black"
+                  HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" FontSize="36">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="#" Binding="{Binding id}" Width="90" />
+                <DataGridTextColumn Header="Найменування" Binding="{Binding nomitation}" Width="800" />
+                <DataGridTextColumn Header="Кількість" Binding="{Binding amount}" Width="200" />
+                <DataGridTextColumn Header="Ціна" Binding="{Binding price}" Width="250" />
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!-- Row 2 - Fields and Total sum -->
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Margin="0,0,0,25">
+            <TextBlock Text="Штрих-код: " FontSize="36" Margin="5" />
+            <TextBox x:Name="BarcodeNumberTextBox" FontSize="36" Margin="5" Width="350"
+                     materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" />
+            <Button x:Name="AddProductButton" Content="Додати продукт" FontSize="32" Width="300" Height="90" Margin="5" />
+        </StackPanel>
+        
+        <!-- Row 3 - Extra Buttons -->
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+            <Button x:Name="ExitButton" Content="Вихід" FontSize="32" Width="150" Height="90" Margin="5" />
+            <Button x:Name="EnterDiscountButton" Content="Ввести дисконтну картку" FontSize="32" Width="450" Height="90" Margin="5" />
+            <Button x:Name="PayButton" Content="До сплати" FontSize="32" Width="250" Height="90" Margin="5" />
+        </StackPanel>
+        
+        <!-- Row 4 - Cashier name, date -->
+        <TextBlock x:Name="NameTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Касир: Островський Вячеслав Дмитрович" FontSize="24" HorizontalAlignment="Left" />
+        <TextBlock x:Name="DateTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Дата та час: 18.03.2023 22:33:44" FontSize="24" HorizontalAlignment="Right" />
+    
+        
+        
+        <!-- Column 2 - Buttons -->
+        <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="3"
+              VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFE2E2E2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="BackspaceButton" Grid.Column="0" Grid.Row="0" 
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393">
+                <Image Source="/Views/backspace.png" Width="45"/>
+            </Button>
+            <Button x:Name="ClearButton" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Content="C" 
+                    Margin="3" FontSize="32" Width="190" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+
+            <Button x:Name="Button_9" Content="9" Grid.Column="2" Grid.Row="1" 
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+            <Button x:Name="Button_8" Content="8" Grid.Column="1" Grid.Row="1" 
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+            <Button x:Name="Button_7" Content="7" Grid.Column="0" Grid.Row="1"
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+
+            <Button x:Name="Button_6" Content="6" Grid.Column="2" Grid.Row="2" 
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+            <Button x:Name="Button_5" Content="5" Grid.Column="1" Grid.Row="2"
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+            <Button x:Name="Button_4" Content="4" Grid.Column="0" Grid.Row="2"
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+
+            <Button x:Name="Button_3" Content="3" Grid.Column="2" Grid.Row="3" 
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+            <Button x:Name="Button_2" Content="2" Grid.Column="1" Grid.Row="3"
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+            <Button x:Name="Button_1" Content="1" Grid.Column="0" Grid.Row="3"
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+
+            <Button x:Name="Button_0" Content="0" Grid.ColumnSpan="3" Grid.Row="4"
+                    Margin="3" FontSize="32" Width="290" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+        </Grid>
+    </Grid>
+</Window>
