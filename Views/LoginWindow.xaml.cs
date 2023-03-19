@@ -76,7 +76,7 @@ namespace CashierApp
 
         private void NumberButton_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
+            Button button = sender as Button;
             LoginTextBox.Text += button.Content;
             LoginTextBox.CaretIndex = LoginTextBox.Text.Length;
             LoginTextBox.Focus();

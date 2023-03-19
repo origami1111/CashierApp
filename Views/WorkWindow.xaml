@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Background="{DynamicResource MaterialDesignPaper}"
         Title="Касовий додаток" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" 
-        ResizeMode="NoResize" WindowState="Maximized" Icon="/Views/logomak_logo.png">
+        ResizeMode="NoResize" WindowState="Maximized" Icon="/Views/logomak_logo.png" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25" />
@@ -45,18 +45,18 @@
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Margin="0,0,0,25">
             <TextBlock Text="Штрих-код: " FontSize="36" Margin="5,20,5,5" />
             <TextBox x:Name="BarcodeNumberTextBox" FontSize="36" Margin="5" Width="350"
-                     materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" />
-            <Button x:Name="AddProductButton" Content="Додати продукт" FontSize="32" Width="300" Height="90" Margin="5" />
+                     materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" MaxLength="13" TextChanged="BarcodeNumberTextBox_TextChanged" PreviewTextInput="BarcodeNumberTextBox_PreviewTextInput" />
+            <Button x:Name="AddProductButton" Content="Додати продукт" FontSize="32" Width="300" Height="90" Margin="5" Click="AddProductButton_Click" />
         </StackPanel>
         
         <!-- Row 3 - Extra Buttons -->
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
-            <Button x:Name="ExitButton" Content="Вихід" FontSize="32" Width="150" Height="90" Margin="5" />
-            <Button x:Name="PayButton" Content="До сплати" FontSize="32" Width="250" Height="90" Margin="5" />
+            <Button x:Name="ExitButton" Content="Вихід" FontSize="32" Width="150" Height="90" Margin="5" Click="ExitButton_Click" />
+            <Button x:Name="PayButton" Content="До сплати" FontSize="32" Width="250" Height="90" Margin="5" Click="PayButton_Click" />
         </StackPanel>
         
         <!-- Row 4 - Cashier name, date -->
-        <TextBlock x:Name="NameTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Касир: Островський Вячеслав Дмитрович" FontSize="24" HorizontalAlignment="Left" />
+        <TextBlock x:Name="CashierNameTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Касир: Островський Вячеслав Дмитрович" FontSize="24" HorizontalAlignment="Left" />
         <TextBlock x:Name="DateTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Дата та час: 18.03.2023 22:33:44" FontSize="24" HorizontalAlignment="Right" />
     
         
@@ -78,35 +78,35 @@
             </Grid.RowDefinitions>
 
             <Button x:Name="BackspaceButton" Grid.Column="0" Grid.Row="0" 
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393">
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="BackspaceButton_Click">
                 <Image Source="/Views/backspace.png" Width="45"/>
             </Button>
             <Button x:Name="ClearButton" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Content="C" 
-                    Margin="3" FontSize="32" Width="190" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="190" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="ClearButton_Click"/>
 
             <Button x:Name="Button_9" Content="9" Grid.Column="2" Grid.Row="1" 
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
             <Button x:Name="Button_8" Content="8" Grid.Column="1" Grid.Row="1" 
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
             <Button x:Name="Button_7" Content="7" Grid.Column="0" Grid.Row="1"
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
 
             <Button x:Name="Button_6" Content="6" Grid.Column="2" Grid.Row="2" 
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
             <Button x:Name="Button_5" Content="5" Grid.Column="1" Grid.Row="2"
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
             <Button x:Name="Button_4" Content="4" Grid.Column="0" Grid.Row="2"
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
 
             <Button x:Name="Button_3" Content="3" Grid.Column="2" Grid.Row="3" 
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
             <Button x:Name="Button_2" Content="2" Grid.Column="1" Grid.Row="3"
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
             <Button x:Name="Button_1" Content="1" Grid.Column="0" Grid.Row="3"
-                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
 
             <Button x:Name="Button_0" Content="0" Grid.ColumnSpan="3" Grid.Row="4"
-                    Margin="3" FontSize="32" Width="290" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
+                    Margin="3" FontSize="32" Width="290" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
         </Grid>
     </Grid>
 </Window>
