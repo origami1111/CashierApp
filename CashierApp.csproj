@@ -107,7 +107,7 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>CashierDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserController.cs" />
+    <Compile Include="Logics\UserController.cs" />
     <Compile Include="Views\DiscountWindow.xaml.cs">
       <DependentUpon>DiscountWindow.xaml</DependentUpon>
     </Compile>

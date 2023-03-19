@@ -27,8 +27,9 @@ namespace CashierApp
             InitializeComponent();
         }
 
-        public WorkWindow(User cashier) : base()
+        public WorkWindow(User cashier)
         {
+            InitializeComponent();
             _cashier = cashier;
         }
     }
