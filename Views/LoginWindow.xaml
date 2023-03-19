@@ -80,20 +80,20 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
-            <Button x:Name="Button_7" Content="7" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="0" Grid.Row="0" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_8" Content="8" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="1" Grid.Row="0" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_9" Content="9" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="0" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_4" Content="4" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="0" Grid.Row="1" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_5" Content="5" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="1" Grid.Row="1" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_6" Content="6" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="1" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_1" Content="1" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="0" Grid.Row="2" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_2" Content="2" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="1" Grid.Row="2" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_3" Content="3" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="2" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="Button_0" Content="0" Margin="3" FontFamily="Arial" FontSize="32" Grid.ColumnSpan="2" Grid.Row="3" Width="190" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393"/>
-            <Button x:Name="BackspaceButton" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="3" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393">
+            <Button x:Name="Button_7" Content="7" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="0" Grid.Row="0" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_8" Content="8" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="1" Grid.Row="0" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_9" Content="9" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="0" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_4" Content="4" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="0" Grid.Row="1" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_5" Content="5" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="1" Grid.Row="1" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_6" Content="6" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="1" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_1" Content="1" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="0" Grid.Row="2" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_2" Content="2" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="1" Grid.Row="2" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_3" Content="3" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="2" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="Button_0" Content="0" Margin="3" FontFamily="Arial" FontSize="32" Grid.ColumnSpan="2" Grid.Row="3" Width="190" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="NumberButton_Click"/>
+            <Button x:Name="BackspaceButton" Margin="3" FontFamily="Arial" FontSize="32" Grid.Column="2" Grid.Row="3" Width="90" Height="90" Background="#FFE2E2E2" Foreground="#DD000000" BorderBrush="#FF939393" Click="BackspaceButton_Click">
                 <Image Width="45" Source="/backspace.png" />
             </Button>
-            <Button x:Name="EnterButton" Content="Увійти" FontFamily="Arial" FontSize="32" Grid.ColumnSpan="3" Grid.Row="4" Height="90" Margin="3,5,5,5" FontWeight="Bold" />
+            <Button x:Name="EnterButton" Content="Увійти" FontFamily="Arial" FontSize="32" Grid.ColumnSpan="3" Grid.Row="4" Height="90" Margin="3,5,5,5" FontWeight="Bold" Click="EnterButton_Click" />
         </Grid>
         
     </Grid>

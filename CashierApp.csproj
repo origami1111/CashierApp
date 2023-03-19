@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net, Version=0.1.4141.31969, Culture=neutral, PublicKeyToken=f3bc8f8c31beeb49, processorArchitecture=MSIL">
+      <HintPath>packages\BCrypt.Net.0.1.0\lib\net35\BCrypt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -79,16 +82,32 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logics\PasswordHelper.cs" />
+    <Compile Include="Models\Card.cs">
+      <DependentUpon>CashierDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CashierDbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CashierDbModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CashierDbModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashierDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CashierDbModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CashierDbModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>CashierDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>CashierDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserController.cs" />
     <Compile Include="Views\DiscountWindow.xaml.cs">
       <DependentUpon>DiscountWindow.xaml</DependentUpon>
     </Compile>
@@ -175,13 +194,17 @@
   <ItemGroup>
     <Resource Include="Views\backspace.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Models\CashierDbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CashierDbModel.Context.cs</LastGenOutput>
+      <DependentUpon>CashierDbModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\CashierDbModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CashierDbModel.edmx</DependentUpon>
+      <LastGenOutput>CashierDbModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

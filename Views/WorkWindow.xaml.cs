@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashierApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,16 @@ namespace CashierApp
     /// </summary>
     public partial class WorkWindow : Window
     {
+        private User _cashier;
+
         public WorkWindow()
         {
             InitializeComponent();
+        }
+
+        public WorkWindow(User cashier) : base()
+        {
+            _cashier = cashier;
         }
     }
 }
