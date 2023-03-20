@@ -10,6 +10,10 @@
         <EntityTypeShape EntityType="CashierDBModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="CashierDBModel.FK__Cards__UserId__2A4B4B5E" ManuallyRouted="false" />
         <AssociationConnector Association="CashierDBModel.FK__Users__RoleId__267ABA7A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CashierDBModel.Product" Width="1.5" PointX="8" PointY="1.75" />
+        <EntityTypeShape EntityType="CashierDBModel.Check" Width="1.5" PointX="7.75" PointY="5" />
+        <AssociationConnector Association="CashierDBModel.CheckProducts" />
+        <AssociationConnector Association="CashierDBModel.FK__Checks__UserId__45F365D3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

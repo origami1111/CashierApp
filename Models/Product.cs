@@ -12,26 +12,21 @@ namespace CashierApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public Product()
         {
-            this.Cards = new HashSet<Card>();
             this.Checks = new HashSet<Check>();
         }
     
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Patronymic { get; set; }
-        public int RoleId { get; set; }
+        public string Nomitation { get; set; }
+        public string Barcode { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Price { get; set; }
+        public byte[] Image { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Card> Cards { get; set; }
-        public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Check> Checks { get; set; }
     }

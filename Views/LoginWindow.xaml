@@ -52,12 +52,14 @@
             <!-- Row 1 - Login field -->
             <Image                         Grid.Column="1" Grid.Row="1" Width="30" Height="30" Source="/account.png" />
             <TextBox x:Name="LoginTextBox" Grid.Column="2" Grid.Row="1"
-                     materialDesign:HintAssist.Hint="Логін" materialDesign:HintAssist.HelperText="Введіть логін користувача" />
+                     materialDesign:HintAssist.Hint="Логін" materialDesign:HintAssist.HelperText="Введіть логін користувача"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" ToolTip="Введіть логін" />
 
             <!-- Row 3 - Password field -->
             <Image                                Grid.Column="1" Grid.Row="3" Width="30" Height="30" Source="/lock.png" />
             <PasswordBox x:Name="PasswordTextBox" Grid.Column="2" Grid.Row="3" 
-                     materialDesign:HintAssist.Hint="Пароль" materialDesign:HintAssist.HelperText="Введіть пароль користувача" />
+                     materialDesign:HintAssist.Hint="Пароль" materialDesign:HintAssist.HelperText="Введіть пароль користувача" 
+                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" ToolTip="Введіть пароль" />
 
             <!-- Row 5 - Error message label -->
             <Image     x:Name="ErrorImage"     Grid.Column="1" Grid.Row="5" Width="30" Height="30" Visibility="Visible" Source="/alert-box.png" />

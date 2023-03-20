@@ -30,12 +30,14 @@ namespace CashierApp
             if (string.IsNullOrWhiteSpace(login))
             {
                 ShowErrorMessage("Введіть логін!");
+                LoginTextBox.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
                 ShowErrorMessage("Введіть пароль!");
+                PasswordTextBox.Focus();
                 return;
             }
 
@@ -85,10 +87,14 @@ namespace CashierApp
         private void BackspaceButton_Click(object sender, RoutedEventArgs e)
         {
             string text = LoginTextBox.Text;
-            text = text.Remove(text.Length - 1);
-            LoginTextBox.Text = text;
-            LoginTextBox.CaretIndex = LoginTextBox.Text.Length;
-            LoginTextBox.Focus();
+
+            if (text.Length != 0)
+            {
+                text = text.Remove(text.Length - 1);
+                LoginTextBox.Text = text;
+                LoginTextBox.CaretIndex = LoginTextBox.Text.Length;
+                LoginTextBox.Focus();
+            }
         }
     }
 }

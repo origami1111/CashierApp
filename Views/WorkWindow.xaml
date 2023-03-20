@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Background="{DynamicResource MaterialDesignPaper}"
         Title="Касовий додаток" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" 
-        ResizeMode="NoResize" WindowState="Maximized" Icon="/Views/logomak_logo.png" Loaded="Window_Loaded">
+        ResizeMode="NoResize" WindowState="Maximized" Icon="/Views/logomak_logo.png" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25" />
@@ -19,48 +19,65 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        
+
         <!-- Column 1 -->
         <!-- Row 1 - Table -->
         <DataGrid x:Name="DataGrid" Grid.Column="1" Grid.Row="1"
             ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="All"
                   HorizontalGridLinesBrush="Black" VerticalGridLinesBrush="Black"
-                  HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" FontSize="36">
+                  HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" FontSize="36" 
+                  SelectionMode="Single" CanUserDeleteRows="False">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Yellow"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            
             <DataGrid.Columns>
-                <DataGridTextColumn Header="#" Binding="{Binding id}" Width="90" />
-                <DataGridTextColumn Header="Найменування" Binding="{Binding nomitation}" Width="800" />
-                <DataGridTextColumn Header="Кількість" Binding="{Binding amount}" Width="200" />
-                <DataGridTextColumn Header="Ціна" Binding="{Binding price}" Width="250" />
+                <DataGridTextColumn Header="Найменування" Binding="{Binding Nomitation}" Width="800" />
+                <DataGridTextColumn Header="Кількість" Binding="{Binding Amount}" Width="200" />
+                <DataGridTextColumn Header="Ціна" Binding="{Binding Price}" Width="250" />
             </DataGrid.Columns>
         </DataGrid>
 
         <Image x:Name="ProductImage" Grid.Column="1" Grid.Row="1" 
-               Height="200" Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Left" Visibility="Visible" />
+               Height="200" Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Left" Visibility="Visible" Opacity="0.7" />
 
         <!-- Row 2 - Fields and Total sum -->
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Margin="0,0,0,25">
-            <TextBlock Text="Штрих-код: " FontSize="36" Margin="5,20,5,5" />
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,15">
+            <TextBlock Text="Штрих-код: " FontSize="36" Margin="5,40,5,5" />
             <TextBox x:Name="BarcodeNumberTextBox" FontSize="36" Margin="5" Width="350"
-                     materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" MaxLength="13" TextChanged="BarcodeNumberTextBox_TextChanged" PreviewTextInput="BarcodeNumberTextBox_PreviewTextInput" />
+                     materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" MaxLength="13" TextChanged="BarcodeNumberTextBox_TextChanged" PreviewTextInput="BarcodeNumberTextBox_PreviewTextInput" 
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" ToolTip="Введіть штрих-код" />
             <Button x:Name="AddProductButton" Content="Додати продукт" FontSize="32" Width="300" Height="90" Margin="5" Click="AddProductButton_Click" />
+            <Image     x:Name="ErrorImage" Width="30" Height="30" Visibility="Visible" Source="/alert-box.png" />
+            <TextBlock x:Name="ErrorTextBlock" Text="Помилка!" Foreground="Red" FontSize="36" Visibility="Visible" VerticalAlignment="Center" />
         </StackPanel>
-        
+
         <!-- Row 3 - Extra Buttons -->
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
             <Button x:Name="ExitButton" Content="Вихід" FontSize="32" Width="150" Height="90" Margin="5" Click="ExitButton_Click" />
+            <Button x:Name="DeleteProductButton" Content="Видалити продукт" FontSize="32" Width="350" Height="90" Margin="5" Click="DeleteProductButton_Click" />
             <Button x:Name="PayButton" Content="До сплати" FontSize="32" Width="250" Height="90" Margin="5" Click="PayButton_Click" />
+            <TextBlock Text="Сума до сплати: " FontSize="36" VerticalAlignment="Center" Margin="15,0,0,0"/>
+            <TextBlock x:Name="SumToPayTextBlock" Text="00.00" FontSize="36" VerticalAlignment="Center" />
+            <TextBlock Text=" грн " FontSize="36" VerticalAlignment="Center"/>
         </StackPanel>
-        
+
         <!-- Row 4 - Cashier name, date -->
         <TextBlock x:Name="CashierNameTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Касир: Островський Вячеслав Дмитрович" FontSize="24" HorizontalAlignment="Left" />
         <TextBlock x:Name="DateTextBlock" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Text="Дата та час: 18.03.2023 22:33:44" FontSize="24" HorizontalAlignment="Right" />
-    
-        
-        
+
+
+
         <!-- Column 2 - Buttons -->
         <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="3"
               VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFE2E2E2" >
