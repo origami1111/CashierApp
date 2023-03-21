@@ -135,9 +135,6 @@
       <DependentUpon>CashierDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Logics\UserController.cs" />
-    <Compile Include="Views\DiscountWindow.xaml.cs">
-      <DependentUpon>DiscountWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\PayWindow.xaml.cs">
       <DependentUpon>PayWindow.xaml</DependentUpon>
     </Compile>
@@ -183,10 +180,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\DiscountWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\PayWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

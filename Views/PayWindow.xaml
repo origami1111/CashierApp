@@ -37,30 +37,26 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Margin="0,20,0,0">
                     <TextBlock Text="Знижка: " FontSize="50" />
-                    <TextBlock x:Name="DiscountTextBlock" Text="-20" FontSize="45" Margin="0,5,0,0"/>
+                    <TextBlock x:Name="DiscountTextBlock" Text="0" FontSize="45" Margin="0,5,0,0"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
-                    <TextBlock Text="Внесено коштів: " FontSize="50" Margin="0,15,0,0" />
-                    <TextBox x:Name="EnteredCashTextBox" Text="500" FontSize="50" Width="200" Height="90"
-                             materialDesign:HintAssist.HelperText="Внесено коштів" materialDesign:HintAssist.Hint="Внесено коштів" 
-                             HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Button x:Name="CalculateChangeButton" Content="Рохрахувати решту" 
-                            Width="350" Height="90" FontSize="32" Margin="10,10,10,10" Click="CalculateChangeButton_Click" />
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Margin="0,25,0,0">
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Margin="0,25,0,0">
                     <TextBlock Text="Дисконтна картка: " FontSize="32" Margin="0,45,0,0" />
                     <TextBox x:Name="BarcodeNumberTextBox" FontSize="32" Width="350"
-                     materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" MaxLength="13" TextChanged="BarcodeNumberTextBox_TextChanged" PreviewTextInput="BarcodeNumberTextBox_PreviewTextInput" 
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" ToolTip="Введіть штрих-код" />
+                        materialDesign:HintAssist.HelperText="Введіть штрих-код з 13 цифр" materialDesign:HintAssist.Hint="Введіть штрих-код" MaxLength="13" TextChanged="BarcodeNumberTextBox_TextChanged" PreviewTextInput="BarcodeNumberTextBox_PreviewTextInput" 
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" ToolTip="Введіть штрих-код" />
                     <Button x:Name="AddDiscountCardButton" Content="Додати" 
                             FontSize="32" Width="300" Height="90" Margin="10" Click="AddDiscountCardButton_Click" />
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="5" Margin="0,25,0,0">
+                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="4" Margin="0,25,0,0">
                     <Button x:Name="GenerateCheckButton" Content="Сформувати чек" 
                             FontSize="32" Width="550" Height="90" Margin="10" Click="GenerateCheckButton_Click" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" >
+                    <Image     x:Name="ErrorImage" Width="30" Height="30" Visibility="Visible" Source="/alert-box.png" />
+                    <TextBlock x:Name="ErrorTextBlock" Text="Помилка!" Foreground="Red" FontSize="36" Visibility="Visible" VerticalAlignment="Center" />
                 </StackPanel>
 
             </Grid>

@@ -36,22 +36,40 @@ namespace CashierApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
+            ToPayTextBlock.Text = _checkGenerator.GetSum().ToString();
         }
 
         private void AddDiscountCardButton_Click(object sender, RoutedEventArgs e)
         {
+            string cardNumber = BarcodeNumberTextBox.Text;
 
-        }
+            if (string.IsNullOrWhiteSpace(cardNumber) || cardNumber.Length != 13)
+            {
+                ShowErrorMessage("Введіть штрих код.");
+                return;
+            }
 
-        private void CalculateChangeButton_Click(object sender, RoutedEventArgs e)
-        {
+            if (!_checkGenerator.AddCustomerToCheck(cardNumber))
+            {
+                ShowErrorMessage("Не знайдено користувача.");
+                return;
+            }
 
+            // update the sum
+            ToPayTextBlock.Text = _checkGenerator.GetSum().ToString();
+            DiscountTextBlock.Text = _checkGenerator.GetDiscount().ToString();
         }
 
         private void GenerateCheckButton_Click(object sender, RoutedEventArgs e)
         {
+            _checkGenerator.GenerateCheck();
+        }
 
+        private void ShowErrorMessage(string errorMessage)
+        {
+            ErrorImage.Visibility = Visibility.Visible;
+            ErrorTextBlock.Visibility = Visibility.Visible;
+            ErrorTextBlock.Text = errorMessage;
         }
 
         private void BarcodeNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)

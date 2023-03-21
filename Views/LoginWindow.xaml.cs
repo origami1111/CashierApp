@@ -58,6 +58,13 @@ namespace CashierApp
                 return;
             }
 
+            if (objUser.Role.Role1 == "customer")
+            {
+                ShowErrorMessage("Логін або пароль недійсні!");
+                ClearFields();
+                return;
+            }
+
             WorkWindow workWindow = new WorkWindow(objUser);
             workWindow.Show();
             this.Close();
