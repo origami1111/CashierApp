@@ -28,8 +28,8 @@ namespace CashierApp.Logics
             // Add the products
             foreach (var product in products)
             {
-                receipt += $"{product.Price,10} х {product.Amount,10}\n";
-                receipt += $"{product.Nomitation, -20}\n";
+                receipt += $"{product.Price} х {product.Amount}\n";
+                receipt += $"{product.Nomitation}\n";
                 receipt += $"\n";
             }
 
@@ -37,14 +37,14 @@ namespace CashierApp.Logics
 
             // Add the sum
             receipt += new string('-', 120) + "\n";
-            receipt += $"{"Сума:", 10} {check.Sum, 10} грн\n";
-            receipt += $"{"Сума зі знижкою:", 10} {check.SumWithDiscount, 10} грн\n";
+            receipt += $"{"Сума:"} {check.Sum} грн\n";
+            receipt += $"{"Сума зі знижкою:"} {check.SumWithDiscount} грн\n";
 
             receipt += new string('-', 120) + "\n";
 
             // Add the date
             receipt += new string('-', 120) + "\n";
-            receipt += $"{"Дата:", 20} {check.OperationTime}\n";
+            receipt += $"{"Дата:"} {check.OperationTime}\n";
 
             return receipt;
         }
