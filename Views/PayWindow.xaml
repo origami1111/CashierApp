@@ -36,8 +36,9 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Margin="0,20,0,0">
-                    <TextBlock Text="Знижка: " FontSize="50" />
+                    <TextBlock Text="Зі знижкою: " FontSize="50" />
                     <TextBlock x:Name="DiscountTextBlock" Text="0" FontSize="45" Margin="0,5,0,0"/>
+                    <TextBlock Text=" грн."  FontSize="45" Margin="5,5,0,0" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Margin="0,25,0,0">
@@ -49,10 +50,9 @@
                             FontSize="32" Width="300" Height="90" Margin="10" Click="AddDiscountCardButton_Click" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Margin="0,25,0,0">
+                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="4" Margin="0,25,0,0">
                     <Button x:Name="GenerateCheckButton" Content="Сформувати чек" 
                             FontSize="32" Width="550" Height="90" Margin="10" Click="GenerateCheckButton_Click" />
-                    <Button x:Name="PrintCheckButton" Content="Роздрукувати" FontSize="32" Height="90" Margin="10" Width="360" Click="PrintCheckButton_Click" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" >

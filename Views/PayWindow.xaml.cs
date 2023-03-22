@@ -14,7 +14,10 @@ namespace CashierApp
     /// </summary>
     public partial class PayWindow : Window
     {
-        private List<Product> _products;
+        private readonly List<Product> _products;
+        private readonly CheckGenerator _checkGenerator;
+        private Check _createdCheck;
+        private Card _card;
 
         public PayWindow()
         {
@@ -25,11 +28,13 @@ namespace CashierApp
         {
             InitializeComponent();
             _products = products;
+            _checkGenerator = new CheckGenerator(products);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            ToPayTextBlock.Text = _checkGenerator.CalculateSum().ToString();
+            DiscountTextBlock.Text = ToPayTextBlock.Text;
         }
 
         private void AddDiscountCardButton_Click(object sender, RoutedEventArgs e)
@@ -42,17 +47,26 @@ namespace CashierApp
                 return;
             }
 
-            throw new NotImplementedException();
+            using (CashierDBEntities cashierDBEntities = new CashierDBEntities())
+            {
+                _card = cashierDBEntities.Cards.SingleOrDefault(card => card.CardNumber == cardNumber);
+
+                if (_card != null)
+                {
+                    DiscountTextBlock.Text = _checkGenerator.CalculateSumWithDiscount(_card.Discount).ToString();
+                }
+            }
         }
 
         private void GenerateCheckButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-        }
+            _createdCheck = _checkGenerator.CheckGenerate(_card);
 
-        private void PrintCheckButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
+            CheckStringGenerator checkStringGenerator = new CheckStringGenerator(_products, _createdCheck);
+            string textToPrint = checkStringGenerator.GenerateCheck();
+
+            Printer printer = new Printer(textToPrint);
+            printer.Print();
         }
 
         private void ShowErrorMessage(string errorMessage)
