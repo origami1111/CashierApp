@@ -40,13 +40,13 @@ namespace CashierApp.Logics
 
         public decimal CalculateSum()
         {
-            return _products.Sum(product => product.Price);
+            return Math.Round(_products.Sum(product => product.Price), 2);
         }
 
         public decimal CalculateSumWithDiscount(decimal discount)
         {
             decimal sum = CalculateSum();
-            return sum * (1 - discount);
+            return Math.Round(sum * (1 - discount));
         }
     }
 }
