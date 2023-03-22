@@ -31,8 +31,8 @@ namespace CashierApp.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Card> Cards { get; set; }
-        public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Check> Checks { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

@@ -87,6 +87,7 @@ namespace CashierApp
             // open pay window
             PayWindow payWindow = new PayWindow(_products);
             payWindow.Show();
+
             DataGrid.ItemsSource = null;
             _products = new List<Product>();
         }

@@ -5,15 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c9cffbc5d2c245bb8070221d481ab0f8" Name="Diagram1">
-        <EntityTypeShape EntityType="CashierDBModel.Card" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CashierDBModel.Role" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CashierDBModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="CashierDBModel.FK__Cards__UserId__2A4B4B5E" ManuallyRouted="false" />
-        <AssociationConnector Association="CashierDBModel.FK__Users__RoleId__267ABA7A" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="CashierDBModel.Product" Width="1.5" PointX="8" PointY="1.75" />
-        <EntityTypeShape EntityType="CashierDBModel.Check" Width="1.5" PointX="7.75" PointY="5" />
-        <AssociationConnector Association="CashierDBModel.CheckProducts" />
-        <AssociationConnector Association="CashierDBModel.FK__Checks__UserId__45F365D3" />
+        <EntityTypeShape EntityType="CashierDBModel.Card" Width="1.5" PointX="5.125" PointY="0.5" />
+        <EntityTypeShape EntityType="CashierDBModel.Check" Width="1.5" PointX="5.125" PointY="3.125" />
+        <EntityTypeShape EntityType="CashierDBModel.Product" Width="1.5" PointX="0.625" PointY="4.5" />
+        <EntityTypeShape EntityType="CashierDBModel.Role" Width="1.5" PointX="0.625" PointY="2.25" />
+        <EntityTypeShape EntityType="CashierDBModel.User" Width="1.5" PointX="2.875" PointY="1.5" />
+        <AssociationConnector Association="CashierDBModel.FK__Cards__UserId__2A4B4B5E" />
+        <AssociationConnector Association="CashierDBModel.FK__Checks__UserId__60A75C0F" />
+        <AssociationConnector Association="CashierDBModel.FK__Users__RoleId__267ABA7A" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

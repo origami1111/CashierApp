@@ -3,16 +3,9 @@ using CashierApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CashierApp
 {
@@ -21,7 +14,7 @@ namespace CashierApp
     /// </summary>
     public partial class PayWindow : Window
     {
-        private CheckGenerator _checkGenerator;
+        private List<Product> _products;
 
         public PayWindow()
         {
@@ -30,13 +23,13 @@ namespace CashierApp
 
         public PayWindow(List<Product> products)
         {
-            _checkGenerator = new CheckGenerator(products);
             InitializeComponent();
+            _products = products;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ToPayTextBlock.Text = _checkGenerator.GetSum().ToString();
+
         }
 
         private void AddDiscountCardButton_Click(object sender, RoutedEventArgs e)
@@ -49,20 +42,17 @@ namespace CashierApp
                 return;
             }
 
-            if (!_checkGenerator.AddCustomerToCheck(cardNumber))
-            {
-                ShowErrorMessage("Не знайдено користувача.");
-                return;
-            }
-
-            // update the sum
-            ToPayTextBlock.Text = _checkGenerator.GetSum().ToString();
-            DiscountTextBlock.Text = _checkGenerator.GetDiscount().ToString();
+            throw new NotImplementedException();
         }
 
         private void GenerateCheckButton_Click(object sender, RoutedEventArgs e)
         {
-            _checkGenerator.GenerateCheck();
+            throw new NotImplementedException();
+        }
+
+        private void PrintCheckButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void ShowErrorMessage(string errorMessage)

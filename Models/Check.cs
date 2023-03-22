@@ -14,20 +14,13 @@ namespace CashierApp.Models
     
     public partial class Check
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Check()
-        {
-            this.Products = new HashSet<Product>();
-        }
-    
         public int Id { get; set; }
+        public Nullable<int> UserId { get; set; }
         public System.DateTime OperationTime { get; set; }
         public decimal Discount { get; set; }
         public decimal Sum { get; set; }
-        public Nullable<int> UserId { get; set; }
+        public Nullable<decimal> SumWithDiscount { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
         public virtual User User { get; set; }
     }
 }
