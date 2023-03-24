@@ -1,52 +1,60 @@
 ﻿using CashierApp.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CashierApp.Logics
 {
     public class CheckStringGenerator
     {
-        private readonly List<Product> products;
-        private readonly Check check;
+        private readonly List<Product> _products;
+        private readonly Check _check;
+
+        private const string SumLabel = "Сума:";
+        private const string DiscountedSumLabel = "Сума зі знижкою:";
+        private const string DateLabel = "Дата:";
 
         public CheckStringGenerator(List<Product> products, Check check)
         {
-            this.products = products;
-            this.check = check;
+            _products = products;
+            _check = check;
         }
 
         public string GenerateCheck()
         {
-            string receipt = "";
+            var receipt = new StringBuilder();
 
             // Add the header
-            receipt += new string('-', 120) + "\n";
+            receipt.AppendLine(new string('-', 120));
 
             // Add the products
-            foreach (var product in products)
+            foreach (var product in _products)
             {
-                receipt += $"{product.Price} х {product.Amount}\n";
-                receipt += $"{product.Nomitation}\n";
-                receipt += $"\n";
+                receipt.AppendLine($"{product.Price} х {product.Amount}");
+                receipt.AppendLine($"{product.Nomitation}");
+                receipt.AppendLine();
             }
 
-            receipt += new string('-', 120) + "\n";
+            receipt.AppendLine(new string('-', 120));
 
             // Add the sum
-            receipt += new string('-', 120) + "\n";
-            receipt += $"{"Сума:"} {check.Sum} грн\n";
-            receipt += $"{"Сума зі знижкою:"} {check.SumWithDiscount} грн\n";
+            receipt.AppendLine(new string('-', 120));
+            receipt.AppendLine($"{SumLabel} {FormatCurrency(_check.Sum)}");
+            receipt.AppendLine($"{DiscountedSumLabel} {FormatCurrency((decimal)_check.SumWithDiscount)}");
 
-            receipt += new string('-', 120) + "\n";
+            receipt.AppendLine(new string('-', 120));
 
             // Add the date
-            receipt += new string('-', 120) + "\n";
-            receipt += $"{"Дата:"} {check.OperationTime}\n";
+            receipt.AppendLine(new string('-', 120));
+            receipt.AppendLine($"{DateLabel} {_check.OperationTime}");
 
-            return receipt;
+            return receipt.ToString();
+        }
+
+        private string FormatCurrency(decimal value)
+        {
+            RegionInfo region = new RegionInfo("UA");
+            return $"{value} {region.CurrencySymbol}";
         }
     }
 }

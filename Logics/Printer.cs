@@ -1,18 +1,13 @@
-﻿using CashierApp.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CashierApp.Logics
 {
     public class Printer
     {
-        private PrintDocument _printDocument;
-        private string _textToPrint;
+        private readonly PrintDocument _printDocument;
+        private readonly string _textToPrint;
 
         public Printer(string textToPrint)
         {

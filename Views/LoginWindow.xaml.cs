@@ -1,5 +1,6 @@
 ﻿using CashierApp.Logics;
 using CashierApp.Models;
+using System.Data.Entity;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,12 +11,14 @@ namespace CashierApp
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private CashierDBEntities _dbContext;
         private readonly UserController _userController;
 
         public LoginWindow()
         {
             InitializeComponent();
-            _userController = new UserController();
+            _dbContext = new CashierDBEntities();
+            _userController = new UserController(_dbContext);
             ErrorImage.Visibility = Visibility.Hidden;
             ErrorTextBlock.Visibility = Visibility.Hidden;
         }

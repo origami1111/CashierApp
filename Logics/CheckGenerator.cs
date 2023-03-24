@@ -8,32 +8,31 @@ namespace CashierApp.Logics
     public class CheckGenerator
     {
         private readonly List<Product> _products;
+        private readonly CashierDBEntities _dbContext;
 
-        public CheckGenerator(List<Product> products)
+        public CheckGenerator(CashierDBEntities dbContext, List<Product> products)
         {
             _products = products;
+            _dbContext = dbContext;
         }
 
         public Check GenerateCheck(Card card)
         {
-            using (CashierDBEntities cashierDbEntities = new CashierDBEntities())
+            int? userId = card?.UserId;
+            decimal discount = card?.Discount ?? 0.0m;
+
+            var newCheck = new Check()
             {
-                int? userId = card?.UserId;
-                decimal discount = card?.Discount ?? 0.0m;
+                OperationTime = DateTime.Now,
+                UserId = userId,
+                Sum = CalculateSum(),
+                SumWithDiscount = CalculateSumWithDiscount(discount)
+            };
 
-                var newCheck = new Check()
-                {
-                    OperationTime = DateTime.Now,
-                    UserId = userId,
-                    Sum = CalculateSum(),
-                    SumWithDiscount = CalculateSumWithDiscount(discount)
-                };
+            _dbContext.Checks.Add(newCheck);
+            _dbContext.SaveChanges();
 
-                cashierDbEntities.Checks.Add(newCheck);
-                cashierDbEntities.SaveChanges();
-
-                return newCheck;
-            }
+            return newCheck;
         }
 
         public decimal CalculateSum()

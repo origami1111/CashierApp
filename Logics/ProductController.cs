@@ -1,24 +1,21 @@
 ﻿using CashierApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace CashierApp.Logics
 {
     public class ProductController
     {
-        private CashierDBEntities _objCashierDbEntites;
+        private CashierDBEntities _dbContext;
 
-        public ProductController()
+        public ProductController(CashierDBEntities dbContext)
         {
-            _objCashierDbEntites= new CashierDBEntities();
+            _dbContext = dbContext;
         }
 
         public async Task<Product> GetProductAsync(string barcode)
         {
-            return await Task.Run(() => _objCashierDbEntites.Products.SingleOrDefault(model => model.Barcode == barcode));
+            return await _dbContext.Products.FirstOrDefaultAsync(model => model.Barcode == barcode);
         }
     }
 }

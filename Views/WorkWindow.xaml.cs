@@ -5,6 +5,7 @@ using CashierApp.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace CashierApp
     
     public partial class WorkWindow : Window
     {
+        private readonly CashierDBEntities _dbContext;
         private readonly ProductController _productController;
         private readonly User _cashier;
         private DispatcherTimer _timer;
@@ -49,7 +51,8 @@ namespace CashierApp
             InitializeComponent();
             InitBarcodeReader();
 
-            _productController = new ProductController();
+            _dbContext = new CashierDBEntities();
+            _productController = new ProductController(_dbContext);
             _cashier = cashier;
             _products = new List<Product>();
         }
@@ -90,6 +93,7 @@ namespace CashierApp
 
             DataGrid.ItemsSource = null;
             _products = new List<Product>();
+            HideErrorMessage();
         }
 
         private async void AddProductButton_Click(object sender, RoutedEventArgs e)

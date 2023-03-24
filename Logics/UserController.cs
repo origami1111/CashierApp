@@ -1,24 +1,21 @@
 ﻿using CashierApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace CashierApp
 {
     public class UserController
     {
-        private CashierDBEntities _objCashierDbEntites;
+        private readonly CashierDBEntities _dbContext;
 
-        public UserController()
+        public UserController(CashierDBEntities dbContext)
         {
-            _objCashierDbEntites = new CashierDBEntities();
+            _dbContext = dbContext;
         }
 
         public async Task<User> GetUserAsync(string username)
         {
-            return await Task.Run(() => _objCashierDbEntites.Users.SingleOrDefault(model => model.Username == username));
+            return await _dbContext.Users.FirstOrDefaultAsync(model => model.Username == username);
         }
     }
 }

@@ -4,8 +4,10 @@ using CashierApp.Logics;
 using CashierApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,6 +20,7 @@ namespace CashierApp
     /// </summary>
     public partial class PayWindow : Window
     {
+        private readonly CashierDBEntities _dbContext;
         private readonly List<Product> _products;
         private readonly CheckGenerator _checkGenerator;
         private Check _createdCheck;
@@ -36,8 +39,10 @@ namespace CashierApp
         {
             InitializeComponent();
             InitBarcodeReader();
+            HideErrorMessage();
+            _dbContext = new CashierDBEntities();
             _products = products;
-            _checkGenerator = new CheckGenerator(products);
+            _checkGenerator = new CheckGenerator(_dbContext, products);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -59,6 +64,7 @@ namespace CashierApp
         private void AddDiscountCardButton_Click(object sender, RoutedEventArgs e)
         {
             string cardNumber = BarcodeNumberTextBox.Text;
+            HideErrorMessage();
 
             if (string.IsNullOrWhiteSpace(cardNumber) || cardNumber.Length != 13)
             {
@@ -70,10 +76,15 @@ namespace CashierApp
             {
                 _card = cashierDBEntities.Cards.SingleOrDefault(card => card.CardNumber == cardNumber);
 
-                if (_card != null)
+                if (_card == null)
                 {
-                    DiscountTextBlock.Text = _checkGenerator.CalculateSumWithDiscount(_card.Discount).ToString();
+                    ShowErrorMessage("Номер картки не знайдений.");
+                    ClearField();
+                    return;
                 }
+
+                DiscountTextBlock.Text = _checkGenerator.CalculateSumWithDiscount(_card.Discount).ToString();
+                HideErrorMessage();
             }
         }
 
@@ -86,6 +97,9 @@ namespace CashierApp
 
             Printer printer = new Printer(textToPrint);
             printer.Print();
+
+            Thread.Sleep(10000);
+            this.Close();
         }
 
         #region BarcodeReader
@@ -139,11 +153,23 @@ namespace CashierApp
 
         #endregion
 
+        private void ClearField()
+        {
+            BarcodeNumberTextBox.Text = string.Empty;
+        }
+
         private void ShowErrorMessage(string errorMessage)
         {
             ErrorImage.Visibility = Visibility.Visible;
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorTextBlock.Text = errorMessage;
+        }
+
+        private void HideErrorMessage()
+        {
+            ErrorImage.Visibility = Visibility.Hidden;
+            ErrorTextBlock.Visibility = Visibility.Hidden;
+            ErrorTextBlock.Text = string.Empty;
         }
 
         private void BarcodeNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
