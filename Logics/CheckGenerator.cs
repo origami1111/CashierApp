@@ -1,9 +1,7 @@
 ﻿using CashierApp.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 
 namespace CashierApp.Logics
 {
@@ -16,12 +14,12 @@ namespace CashierApp.Logics
             _products = products;
         }
 
-        public Check CheckGenerate(Card card)
+        public Check GenerateCheck(Card card)
         {
             using (CashierDBEntities cashierDbEntities = new CashierDBEntities())
             {
-                int? userId = card == null ? null : card.UserId;
-                decimal discount = card == null ? 0.0m : card.Discount;
+                int? userId = card?.UserId;
+                decimal discount = card?.Discount ?? 0.0m;
 
                 var newCheck = new Check()
                 {
@@ -46,7 +44,7 @@ namespace CashierApp.Logics
         public decimal CalculateSumWithDiscount(decimal discount)
         {
             decimal sum = CalculateSum();
-            return Math.Round(sum * (1 - discount));
+            return Math.Round(sum * (1 - discount), 2);
         }
     }
 }

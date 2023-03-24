@@ -8,7 +8,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Background="{DynamicResource MaterialDesignPaper}"
         Title="Оплата" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" 
-        ResizeMode="NoResize" WindowState="Maximized" Icon="/logomak_logo.png" Loaded="Window_Loaded">
+        ResizeMode="NoResize" WindowState="Maximized" Icon="/logomak_logo.png" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <materialDesign:Card Width="1000" Height="800" Padding="8" UniformCornerRadius="6"
                              Background="White" Foreground="Black" 

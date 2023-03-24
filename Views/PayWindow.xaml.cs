@@ -1,11 +1,15 @@
-﻿using CashierApp.Logics;
+﻿using AForge.Video;
+using AForge.Video.DirectShow;
+using CashierApp.Logics;
 using CashierApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ZXing;
 
 namespace CashierApp
 {
@@ -19,6 +23,10 @@ namespace CashierApp
         private Check _createdCheck;
         private Card _card;
 
+        private BarcodeReader _barcodeReader;
+        private FilterInfoCollection _videoDevices;
+        private VideoCaptureDevice _videoSource;
+
         public PayWindow()
         {
             InitializeComponent();
@@ -27,6 +35,7 @@ namespace CashierApp
         public PayWindow(List<Product> products)
         {
             InitializeComponent();
+            InitBarcodeReader();
             _products = products;
             _checkGenerator = new CheckGenerator(products);
         }
@@ -35,6 +44,16 @@ namespace CashierApp
         {
             ToPayTextBlock.Text = _checkGenerator.CalculateSum().ToString();
             DiscountTextBlock.Text = ToPayTextBlock.Text;
+
+            // video
+            _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+            if (_videoDevices.Count > 0)
+            {
+                _videoSource = new VideoCaptureDevice(_videoDevices[0].MonikerString);
+                _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+                _videoSource.Start();
+            }
         }
 
         private void AddDiscountCardButton_Click(object sender, RoutedEventArgs e)
@@ -60,7 +79,7 @@ namespace CashierApp
 
         private void GenerateCheckButton_Click(object sender, RoutedEventArgs e)
         {
-            _createdCheck = _checkGenerator.CheckGenerate(_card);
+            _createdCheck = _checkGenerator.GenerateCheck(_card);
 
             CheckStringGenerator checkStringGenerator = new CheckStringGenerator(_products, _createdCheck);
             string textToPrint = checkStringGenerator.GenerateCheck();
@@ -68,6 +87,57 @@ namespace CashierApp
             Printer printer = new Printer(textToPrint);
             printer.Print();
         }
+
+        #region BarcodeReader
+
+        delegate void SetStringDelegate(string parameter);
+        private void SetResult(string result)
+        {
+            if (Dispatcher.CheckAccess())
+            {
+                BarcodeNumberTextBox.Text = result;
+                BarcodeNumberTextBox.Focus();
+            }
+            else
+            {
+                Dispatcher.Invoke(new SetStringDelegate(SetResult), new object[] { result });
+            }
+        }
+
+        private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            var frame = (Bitmap)eventArgs.Frame.Clone();
+            Result result = _barcodeReader.Decode(frame);
+
+            if (result != null)
+            {
+                SetResult(result.Text);
+            }
+        }
+
+        private void InitBarcodeReader()
+        {
+            _barcodeReader = new BarcodeReader()
+            {
+                AutoRotate = true
+            };
+
+            _barcodeReader.Options.PossibleFormats = new List<BarcodeFormat>
+            {
+                BarcodeFormat.EAN_13
+            };
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_videoSource != null)
+            {
+                _videoSource.SignalToStop();
+                _videoSource.WaitForStop();
+            }
+        }
+
+        #endregion
 
         private void ShowErrorMessage(string errorMessage)
         {
