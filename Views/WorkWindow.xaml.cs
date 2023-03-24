@@ -1,17 +1,13 @@
-﻿using AForge.Video;
-using AForge.Video.DirectShow;
-using CashierApp.Logics;
+﻿using CashierApp.Logics;
 using CashierApp.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ZXing;
 
 namespace CashierApp
 {
@@ -24,12 +20,10 @@ namespace CashierApp
         private readonly CashierDBEntities _dbContext;
         private readonly ProductController _productController;
         private readonly User _cashier;
+        private readonly BarcodeReader _barcodeReader;
         private DispatcherTimer _timer;
         private List<Product> _products;
 
-        private ZXing.BarcodeReader _barcodeReader;
-        private FilterInfoCollection _videoDevices;
-        private VideoCaptureDevice _videoSource;
 
         public WorkWindow()
         {
@@ -39,7 +33,8 @@ namespace CashierApp
         public WorkWindow(User cashier)
         {
             InitializeComponent();
-            InitBarcodeReader();
+
+            _barcodeReader = new BarcodeReader(BarcodeNumberTextBox);
 
             _dbContext = new CashierDBEntities();
             _productController = new ProductController(_dbContext);
@@ -58,15 +53,7 @@ namespace CashierApp
             CashierNameTextBlock.Text = GetFullCashierName();
             HideErrorMessage();
 
-            // video
-            _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-
-            if (_videoDevices.Count > 0)
-            {
-                _videoSource = new VideoCaptureDevice(_videoDevices[0].MonikerString);
-                _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
-                _videoSource.Start();
-            }
+            _barcodeReader.Start("@device:pnp:\\\\?\\usb#vid_13d3&pid_56a2&mi_00#7&c91c3a9&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global");
         }
 
         private void PayButton_Click(object sender, RoutedEventArgs e)
@@ -158,56 +145,10 @@ namespace CashierApp
             return sum;
         }
 
-        #region Barcode reader
-
-        delegate void SetStringDelegate(string parameter);
-        private void SetResult(string result)
-        {
-            if (Dispatcher.CheckAccess())
-            {
-                BarcodeNumberTextBox.Text = result;
-                BarcodeNumberTextBox.Focus();
-            }
-            else
-            {
-                Dispatcher.Invoke(new SetStringDelegate(SetResult), new object[] { result });
-            }
-        }
-
-        private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
-        {
-            var frame = (Bitmap)eventArgs.Frame.Clone();
-            Result result = _barcodeReader.Decode(frame);
-
-            if (result != null)
-            {
-                SetResult(result.Text);
-            }
-        }
-
-        private void InitBarcodeReader()
-        {
-            _barcodeReader = new ZXing.BarcodeReader()
-            {
-                AutoRotate = true
-            };
-
-            _barcodeReader.Options.PossibleFormats = new List<BarcodeFormat>
-            {
-                BarcodeFormat.EAN_13
-            };
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_videoSource != null)
-            {
-                _videoSource.SignalToStop();
-                _videoSource.WaitForStop();
-            }
+            _barcodeReader.Stop();
         }
-
-        #endregion
 
         private void ShowErrorMessage(string errorMessage)
         {

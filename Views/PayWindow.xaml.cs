@@ -1,17 +1,13 @@
-﻿using AForge.Video;
-using AForge.Video.DirectShow;
-using CashierApp.Logics;
+﻿using CashierApp.Logics;
 using CashierApp.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ZXing;
 
 namespace CashierApp
 {
@@ -23,12 +19,9 @@ namespace CashierApp
         private readonly CashierDBEntities _dbContext;
         private readonly List<Product> _products;
         private readonly CheckGenerator _checkGenerator;
+        private readonly BarcodeReader _barcodeReader;
         private Check _createdCheck;
         private Card _card;
-
-        private BarcodeReader _barcodeReader;
-        private FilterInfoCollection _videoDevices;
-        private VideoCaptureDevice _videoSource;
 
         public PayWindow()
         {
@@ -38,8 +31,8 @@ namespace CashierApp
         public PayWindow(List<Product> products)
         {
             InitializeComponent();
-            InitBarcodeReader();
             HideErrorMessage();
+            _barcodeReader = new BarcodeReader(BarcodeNumberTextBox);
             _dbContext = new CashierDBEntities();
             _products = products;
             _checkGenerator = new CheckGenerator(_dbContext, products);
@@ -50,15 +43,7 @@ namespace CashierApp
             ToPayTextBlock.Text = _checkGenerator.CalculateSum().ToString();
             DiscountTextBlock.Text = ToPayTextBlock.Text;
 
-            // video
-            _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-
-            if (_videoDevices.Count > 0)
-            {
-                _videoSource = new VideoCaptureDevice(_videoDevices[0].MonikerString);
-                _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
-                _videoSource.Start();
-            }
+            _barcodeReader.Start("@device:pnp:\\\\?\\usb#vid_13d3&pid_56a2&mi_00#7&c91c3a9&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global");
         }
 
         private void AddDiscountCardButton_Click(object sender, RoutedEventArgs e)
@@ -72,23 +57,20 @@ namespace CashierApp
                 return;
             }
 
-            using (CashierDBEntities cashierDBEntities = new CashierDBEntities())
+            _card = _dbContext.Cards.SingleOrDefault(card => card.CardNumber == cardNumber);
+
+            if (_card == null)
             {
-                _card = cashierDBEntities.Cards.SingleOrDefault(card => card.CardNumber == cardNumber);
-
-                if (_card == null)
-                {
-                    ShowErrorMessage("Номер картки не знайдений.");
-                    ClearField();
-                    return;
-                }
-
-                DiscountTextBlock.Text = _checkGenerator.CalculateSumWithDiscount(_card.Discount).ToString();
-                HideErrorMessage();
+                ShowErrorMessage("Номер картки не знайдений.");
+                ClearField();
+                return;
             }
+
+            DiscountTextBlock.Text = _checkGenerator.CalculateSumWithDiscount(_card.Discount).ToString();
+            HideErrorMessage();
         }
 
-        private void GenerateCheckButton_Click(object sender, RoutedEventArgs e)
+        private async void GenerateCheckButton_Click(object sender, RoutedEventArgs e)
         {
             _createdCheck = _checkGenerator.GenerateCheck(_card);
 
@@ -96,62 +78,26 @@ namespace CashierApp
             string textToPrint = checkStringGenerator.GenerateCheck();
 
             Printer printer = new Printer(textToPrint);
-            printer.Print();
 
-            Thread.Sleep(10000);
+            try
+            {
+                await Task.Run(() => printer.Print());
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                ShowErrorMessage($"Failed to print the receipt: {ex.Message}");
+                return;
+            }
+
+            await Task.Delay(10000);
             this.Close();
-        }
-
-        #region BarcodeReader
-
-        delegate void SetStringDelegate(string parameter);
-        private void SetResult(string result)
-        {
-            if (Dispatcher.CheckAccess())
-            {
-                BarcodeNumberTextBox.Text = result;
-                BarcodeNumberTextBox.Focus();
-            }
-            else
-            {
-                Dispatcher.Invoke(new SetStringDelegate(SetResult), new object[] { result });
-            }
-        }
-
-        private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
-        {
-            var frame = (Bitmap)eventArgs.Frame.Clone();
-            Result result = _barcodeReader.Decode(frame);
-
-            if (result != null)
-            {
-                SetResult(result.Text);
-            }
-        }
-
-        private void InitBarcodeReader()
-        {
-            _barcodeReader = new BarcodeReader()
-            {
-                AutoRotate = true
-            };
-
-            _barcodeReader.Options.PossibleFormats = new List<BarcodeFormat>
-            {
-                BarcodeFormat.EAN_13
-            };
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_videoSource != null)
-            {
-                _videoSource.SignalToStop();
-                _videoSource.WaitForStop();
-            }
+            _barcodeReader.Stop();
         }
-
-        #endregion
 
         private void ClearField()
         {

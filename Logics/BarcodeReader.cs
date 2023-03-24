@@ -1,57 +1,42 @@
-﻿using System.Threading;
-using System.Collections.Concurrent;
-using AForge.Video;
+﻿using AForge.Video;
 using ZXing;
 using AForge.Video.DirectShow;
 using System.Drawing;
+using System.Windows.Controls;
+using System.Windows;
+using System.Collections.Generic;
 
 namespace CashierApp.Logics
 {
     public class BarcodeReader
     {
-        private ConcurrentQueue<string> barcodeQueue;
-        private Thread barcodeThread;
-        private VideoCaptureDevice barcodeDevice;
-        private ZXing.BarcodeReader reader;
+        private VideoCaptureDevice _barcodeDevice;
+        private readonly ZXing.BarcodeReader _reader;
+        private readonly TextBox _textBox;
 
-        public BarcodeReader()
+        public BarcodeReader(TextBox textBox)
         {
-            barcodeQueue = new ConcurrentQueue<string>();
-            barcodeThread = new Thread(ReadBarcodes);
-            barcodeThread.Start();
-            reader = new ZXing.BarcodeReader();
+            _reader = new ZXing.BarcodeReader();
+
+            _reader.Options.PossibleFormats = new List<BarcodeFormat>
+            {
+                BarcodeFormat.EAN_13
+            };
+
+            this._textBox = textBox;
         }
 
         public void Start(string barcodeDeviceName)
         {
-            barcodeDevice = new VideoCaptureDevice(barcodeDeviceName);
-            barcodeDevice.NewFrame += BarcodeDevice_NewFrame;
-            barcodeDevice.Start();
+            _barcodeDevice = new VideoCaptureDevice(barcodeDeviceName);
+            _barcodeDevice.NewFrame += BarcodeDevice_NewFrame;
+            _barcodeDevice.Start();
         }
 
         public void Stop()
         {
-            barcodeDevice.SignalToStop();
-            barcodeDevice.WaitForStop();
-            barcodeThread.Abort();
-        }
-
-        public bool TryDequeueBarcode(out string barcode)
-        {
-            return barcodeQueue.TryDequeue(out barcode);
-        }
-
-        private void ReadBarcodes()
-        {
-            while (true)
-            {
-                string barcode = "";
-                if (barcodeQueue.TryDequeue(out barcode))
-                {
-                    // Handle barcode data here
-                }
-                Thread.Sleep(100);
-            }
+            _barcodeDevice.SignalToStop();
+            _barcodeDevice.WaitForStop();
         }
 
         private void BarcodeDevice_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -60,14 +45,26 @@ namespace CashierApp.Logics
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
 
             // Decode the barcode
-            Result result = reader.Decode(bitmap);
+            Result result = _reader.Decode(bitmap);
 
             if (result != null)
             {
                 string barcode = result.Text;
+                SetResult(barcode);
+            }
+        }
 
-                // Enqueue the barcode data
-                barcodeQueue.Enqueue(barcode);
+        delegate void SetStringDelegate(string parameter);
+        private void SetResult(string result)
+        {
+            if (Application.Current.Dispatcher.CheckAccess())
+            {
+                _textBox.Text = result;
+                _textBox.Focus();
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(new SetStringDelegate(SetResult), new object[] { result });
             }
         }
     }
