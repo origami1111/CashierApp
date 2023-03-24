@@ -3,26 +3,15 @@ using AForge.Video.DirectShow;
 using CashierApp.Logics;
 using CashierApp.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using ZXing;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CashierApp
 {
@@ -37,7 +26,8 @@ namespace CashierApp
         private readonly User _cashier;
         private DispatcherTimer _timer;
         private List<Product> _products;
-        private BarcodeReader _barcodeReader;
+
+        private ZXing.BarcodeReader _barcodeReader;
         private FilterInfoCollection _videoDevices;
         private VideoCaptureDevice _videoSource;
 
@@ -197,7 +187,7 @@ namespace CashierApp
 
         private void InitBarcodeReader()
         {
-            _barcodeReader = new BarcodeReader()
+            _barcodeReader = new ZXing.BarcodeReader()
             {
                 AutoRotate = true
             };
@@ -230,6 +220,7 @@ namespace CashierApp
         {
             ErrorImage.Visibility = Visibility.Hidden;
             ErrorTextBlock.Visibility = Visibility.Hidden;
+            ErrorTextBlock.Text = string.Empty;
         }
 
         private void ClearField()
@@ -298,6 +289,5 @@ namespace CashierApp
                 e.Handled = true; // Отменяем ввод символа
             }
         }
-
     }
 }

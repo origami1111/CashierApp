@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logics\BarcodeReader.cs" />
     <Compile Include="Logics\CheckGenerator.cs" />
     <Compile Include="Logics\CheckStringGenerator.cs" />
     <Compile Include="Logics\PasswordHelper.cs" />

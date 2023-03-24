@@ -1,6 +1,5 @@
 ﻿using CashierApp.Logics;
 using CashierApp.Models;
-using System.Data.Entity;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,7 +10,7 @@ namespace CashierApp
     /// </summary>
     public partial class LoginWindow : Window
     {
-        private CashierDBEntities _dbContext;
+        private readonly CashierDBEntities _dbContext;
         private readonly UserController _userController;
 
         public LoginWindow()
@@ -19,8 +18,7 @@ namespace CashierApp
             InitializeComponent();
             _dbContext = new CashierDBEntities();
             _userController = new UserController(_dbContext);
-            ErrorImage.Visibility = Visibility.Hidden;
-            ErrorTextBlock.Visibility = Visibility.Hidden;
+            HideErrorMessage();
         }
 
         private async void EnterButton_Click(object sender, RoutedEventArgs e)
@@ -84,6 +82,13 @@ namespace CashierApp
             ErrorImage.Visibility = Visibility.Visible;
             ErrorTextBlock.Visibility = Visibility.Visible;
             ErrorTextBlock.Text = errorMessage;
+        }
+
+        private void HideErrorMessage()
+        {
+            ErrorImage.Visibility = Visibility.Hidden;
+            ErrorTextBlock.Visibility = Visibility.Hidden;
+            ErrorTextBlock.Text = string.Empty;
         }
 
         private void NumberButton_Click(object sender, RoutedEventArgs e)
