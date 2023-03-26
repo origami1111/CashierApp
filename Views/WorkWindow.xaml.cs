@@ -1,8 +1,9 @@
 ﻿using CashierApp.Logics;
 using CashierApp.Models;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,8 +23,7 @@ namespace CashierApp
         private readonly User _cashier;
         private readonly BarcodeReader _barcodeReader;
         private DispatcherTimer _timer;
-        private List<Product> _products;
-
+        private ObservableCollection<Product> _products;
 
         public WorkWindow()
         {
@@ -39,12 +39,14 @@ namespace CashierApp
             _dbContext = new CashierDBEntities();
             _productController = new ProductController(_dbContext);
             _cashier = cashier;
-            _products = new List<Product>();
+            _products = new ObservableCollection<Product>();
+
+            DataGrid.ItemsSource = _products;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //  DispatcherTimer setup
+            // DispatcherTimer setup
             _timer = new DispatcherTimer();
             _timer.Tick += new EventHandler(Timer_Tick);
             _timer.Interval = new TimeSpan(0, 0, 1);
@@ -65,11 +67,12 @@ namespace CashierApp
             }
 
             // open pay window
-            PayWindow payWindow = new PayWindow(_products);
+            PayWindow payWindow = new PayWindow(_products.ToList());
             payWindow.Show();
 
             DataGrid.ItemsSource = null;
-            _products = new List<Product>();
+            ProductImage.Source = null;
+            _products = new ObservableCollection<Product>();
             HideErrorMessage();
         }
 
@@ -87,20 +90,28 @@ namespace CashierApp
                 return;
             }
 
-            AddProductToDataGrid(objProduct);
+            AddProduct(objProduct);
             ClearField();
         }
 
-        private void AddProductToDataGrid(Product objProduct)
+        
+        private void DeleteProduct(Product product)
+        {
+            _products.Remove(product);
+
+            DataGrid.SelectedIndex = DataGrid.Items.Count;
+            SumToPayTextBlock.Text = CalculateSum().ToString();
+        }
+
+        private void AddProduct(Product objProduct)
         {
             _products.Add(objProduct);
-            DataGrid.ItemsSource = null;
-            DataGrid.ItemsSource = _products;
 
             using (var ms = new MemoryStream(objProduct.Image))
             {
                 // создаем новый BitmapImage
                 var image = new BitmapImage();
+
                 // загружаем изображение из MemoryStream
                 image.BeginInit();
                 image.StreamSource = ms;
@@ -112,7 +123,7 @@ namespace CashierApp
             }
 
             DataGrid.SelectedIndex = DataGrid.Items.Count;
-            SumToPayTextBlock.Text = GetSum().ToString();
+            SumToPayTextBlock.Text = CalculateSum().ToString();
         }
 
         private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
@@ -126,14 +137,10 @@ namespace CashierApp
             }
 
             var objProduct = (Product)selectedRow;
-            _products.Remove(objProduct);
-            DataGrid.ItemsSource = null;
-            DataGrid.ItemsSource = _products;
-            DataGrid.SelectedIndex = DataGrid.Items.Count;
-            SumToPayTextBlock.Text = GetSum().ToString();
+            DeleteProduct(objProduct);
         }
 
-        private decimal GetSum()
+        private decimal CalculateSum()
         {
             decimal sum = 0;
 
