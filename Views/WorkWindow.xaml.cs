@@ -70,9 +70,10 @@ namespace CashierApp
             PayWindow payWindow = new PayWindow(_products.ToList());
             payWindow.Show();
 
-            DataGrid.ItemsSource = null;
-            ProductImage.Source = null;
             _products = new ObservableCollection<Product>();
+            DataGrid.ItemsSource = _products;
+            ProductImage.Source = null;
+            SumToPayTextBlock.Text = $"{0.0m}";
             HideErrorMessage();
         }
 

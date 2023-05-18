@@ -104,6 +104,7 @@
     <Compile Include="Logics\BarcodeReader.cs" />
     <Compile Include="Logics\CheckGenerator.cs" />
     <Compile Include="Logics\CheckStringGenerator.cs" />
+    <Compile Include="Logics\Discount.cs" />
     <Compile Include="Logics\PasswordHelper.cs" />
     <Compile Include="Logics\Printer.cs" />
     <Compile Include="Logics\ProductController.cs" />

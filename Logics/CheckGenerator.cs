@@ -18,19 +18,40 @@ namespace CashierApp.Logics
 
         public Check GenerateCheck(Card card)
         {
-            int? userId = card?.UserId;
-            decimal discount = card?.Discount ?? 0.0m;
+            var newCheck = new Check();
+            decimal discountPercentage = 0.0m;
 
-            var newCheck = new Check()
+            if (card != null)
             {
-                OperationTime = DateTime.Now,
-                UserId = userId,
-                Sum = CalculateSum(),
-                SumWithDiscount = CalculateSumWithDiscount(discount)
-            };
+                int? userId = card.UserId;
+                discountPercentage = card.Discount;
 
-            _dbContext.Checks.Add(newCheck);
-            _dbContext.SaveChanges();
+                newCheck = new Check()
+                {
+                    OperationTime = DateTime.Now,
+                    UserId = userId,
+                    Sum = CalculateSum(),
+                    SumWithDiscount = CalculateSumWithDiscount(discountPercentage)
+                };
+
+                Discount discount = new Discount(_dbContext, card);
+                discount.CalculateDiscount();
+
+                _dbContext.Checks.Add(newCheck);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                newCheck = new Check()
+                {
+                    OperationTime = DateTime.Now,
+                    Sum = CalculateSum(),
+                    SumWithDiscount = CalculateSumWithDiscount(discountPercentage)
+                };
+
+                _dbContext.Checks.Add(newCheck);
+                _dbContext.SaveChanges();
+            }
 
             return newCheck;
         }
