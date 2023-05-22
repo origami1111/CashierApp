@@ -67,5 +67,10 @@ namespace CashierApp.Logics
                 Application.Current.Dispatcher.Invoke(new SetStringDelegate(SetResult), new object[] { result });
             }
         }
+
+        private void SomeNewLogic()
+        {
+
+        }
     }
 }
